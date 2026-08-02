@@ -1,0 +1,1779 @@
+{
+  "datasets": [
+    {
+      "name": "51a1e510",
+      "displayName": "BrightTV Metrics",
+      "config": {
+        "version": "1.1",
+        "source": "bright_tv_case_study.default.bright_tv_dataset",
+        "dimensions": [
+          {
+            "name": "UserID",
+            "expr": "source.UserID",
+            "displayName": "User ID"
+          },
+          {
+            "name": "first_name",
+            "expr": "source.first_name",
+            "displayName": "First Name"
+          },
+          {
+            "name": "last_name",
+            "expr": "source.last_name",
+            "displayName": "Last Name"
+          },
+          {
+            "name": "email",
+            "expr": "source.email",
+            "displayName": "Email"
+          },
+          {
+            "name": "gender",
+            "expr": "source.gender",
+            "displayName": "Gender"
+          },
+          {
+            "name": "race",
+            "expr": "source.race",
+            "displayName": "Race"
+          },
+          {
+            "name": "province",
+            "expr": "source.province",
+            "displayName": "Province"
+          },
+          {
+            "name": "age_groups",
+            "expr": "source.age_groups",
+            "displayName": "Age Groups"
+          },
+          {
+            "name": "email_flag",
+            "expr": "source.email_flag",
+            "displayName": "Email Flag"
+          },
+          {
+            "name": "social_flag",
+            "expr": "source.social_flag",
+            "displayName": "Social Flag"
+          },
+          {
+            "name": "tv_channel",
+            "expr": "source.tv_channel",
+            "displayName": "TV Channel"
+          },
+          {
+            "name": "record_timestamp_sa",
+            "expr": "source.record_timestamp_sa",
+            "displayName": "Record Timestamp"
+          },
+          {
+            "name": "view_date_sa",
+            "expr": "source.view_date_sa",
+            "displayName": "View Date"
+          },
+          {
+            "name": "day_name",
+            "expr": "source.day_name",
+            "displayName": "Day Name"
+          },
+          {
+            "name": "view_hour",
+            "expr": "source.view_hour",
+            "displayName": "View Hour"
+          },
+          {
+            "name": "duration_bucket",
+            "expr": "source.duration_bucket",
+            "displayName": "Duration Bucket"
+          },
+          {
+            "name": "activity_level",
+            "expr": "source.activity_level",
+            "displayName": "Activity Level"
+          }
+        ],
+        "measures": [
+          {
+            "name": "total_subscribers",
+            "expr": "COUNT(DISTINCT source.UserID)",
+            "displayName": "Total Subscribers"
+          },
+          {
+            "name": "total_sessions",
+            "expr": "COUNT(*)",
+            "displayName": "Total Viewing Sessions"
+          },
+          {
+            "name": "total_watch_minutes",
+            "expr": "SUM(source.watch_minutes)",
+            "displayName": "Total Watch Minutes"
+          },
+          {
+            "name": "avg_watch_minutes",
+            "expr": "AVG(source.watch_minutes)",
+            "displayName": "Average Watch Minutes"
+          },
+          {
+            "name": "total_channels",
+            "expr": "COUNT(DISTINCT source.tv_channel)",
+            "displayName": "Total TV Channels"
+          },
+          {
+            "name": "active_subscribers",
+            "expr": "COUNT(DISTINCT CASE WHEN source.activity_level IN ('Partially Active', 'Minimally Active', 'Fully Active') THEN source.UserID END)",
+            "displayName": "Active Subscribers"
+          },
+          {
+            "name": "inactive_subscribers",
+            "expr": "COUNT(DISTINCT CASE WHEN source.activity_level = 'Inactive Subscriber' THEN source.UserID END)",
+            "displayName": "Inactive Subscribers"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "bcdb404d",
+      "displayName": "Bright TV Analysis",
+      "layout": [
+        {
+          "widget": {
+            "name": "total_subscribers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 4,080 unique subscribers across all provinces with diverse demographic profiles.\n\n**Recommendation**: Target underrepresented segments through tailored acquisition campaigns.",
+                "title": "Total Subscribers",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_subscribers)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "total_sessions",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(total_sessions)",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 10,000 total viewing sessions indicate strong platform engagement.\n\n**Recommendation**: Increase session frequency through personalized content recommendations.",
+                "title": "Total Viewing Sessions",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_sessions)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "total_watch_minutes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(total_watch_minutes)",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 91K total watch minutes demonstrates platform stickiness.\n\n**Recommendation**: Set quarterly watch time growth targets and track progression towards 150K minutes.",
+                "title": "Total Watch Minutes",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_watch_minutes)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "avg_watch_minutes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(avg_watch_minutes)",
+                      "expression": "MEASURE(`avg_watch_minutes`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: Average session duration suggests short-form content consumption patterns.\n\n**Recommendation**: Optimize content length and introduce binge-worthy series to increase watch time.",
+                "title": "Average Watch Minutes",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(avg_watch_minutes)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "active_subscribers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(active_subscribers)",
+                      "expression": "MEASURE(`active_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 5,441 active subscribers (Fully, Partially, Minimally active combined) represent 85% engagement rate.\n\n**Recommendation**: Set goal to move 50% of minimally active users to partially/fully active via gamification.",
+                "title": "Active Subscribers",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(active_subscribers)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "inactive_subscribers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(inactive_subscribers)",
+                      "expression": "MEASURE(`inactive_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 598 inactive subscribers (15% churn risk) require immediate intervention.\n\n**Recommendation**: Launch 30-day win-back campaign with exclusive content and personalized offers.",
+                "title": "Inactive Subscribers",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(inactive_subscribers)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 10,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "total_channels",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "yearly(view_date_sa)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    },
+                    {
+                      "name": "measure(total_channels)",
+                      "expression": "MEASURE(`total_channels`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"YEAR\", `view_date_sa`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: 18 active channels provide content variety.\n\n**Recommendation**: Evaluate bottom performers for replacement or repositioning; negotiate sports content expansion.",
+                "title": "Number of TV Channels",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_channels)"
+                },
+                "period": {
+                  "fieldName": "yearly(view_date_sa)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "section_demographics",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Viewer Demographics\n",
+                "\n",
+                "**Understanding our subscriber base composition**"
+              ],
+              "verticalAlign": "VERTICAL_ALIGN_BOTTOM"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "age_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "age_groups",
+                      "expression": "`age_groups`"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Youth segment dominates (55%), followed by middle adults (34%).\n\n**Recommendation**: Develop age-appropriate content strategies for pensioners and children segments.",
+                "title": "Subscribers by Age Group",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "age_groups",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "race_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "race",
+                      "expression": "`race`"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Black subscribers lead at 38%, followed by Indian/Asian (17%) and White (17%); diverse representation achieved.\n\n**Recommendation**: Ensure content library reflects this diversity and expand culturally relevant programming.",
+                "title": "Subscribers by Race",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "race",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "province_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "province",
+                      "expression": "`province`"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Gauteng dominates with 37% of subscribers, Western Cape (18%) and Kwazulu Natal (10%) follow.\n\n**Recommendation**: Focus expansion efforts on underserved provinces like Northern Cape and Free State.",
+                "title": "Subscribers by Province",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "province",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "gender_chart_fixed",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    },
+                    {
+                      "name": "gender",
+                      "expression": "`gender`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Strong male skew (85%) indicates gender imbalance in subscriber base.\n\n**Recommendation**: Launch targeted campaigns to attract female viewers and balance content offerings.",
+                "title": "Subscribers by Gender",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "gender",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "angle-reversed"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "section_behaviour",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Viewer Behaviour\n",
+                "\n",
+                "**Analyzing viewing patterns by time and engagement level**"
+              ],
+              "verticalAlign": "VERTICAL_ALIGN_CENTER"
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "hour_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "view_hour",
+                      "expression": "`view_hour`"
+                    },
+                    {
+                      "name": "measure(total_sessions)",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Peak viewing hours are 12 PM-8 PM, with lowest activity 2-5 AM.\n\n**Recommendation**: Schedule premium content during peak hours and optimize ad inventory placement for maximum reach.",
+                "title": "Viewing Sessions by Hour",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "view_hour",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_sessions)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_sessions)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 16,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "day_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "day_name",
+                      "expression": "`day_name`"
+                    },
+                    {
+                      "name": "measure(total_sessions)",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Friday and Saturday lead with 1,675 and 1,633 sessions; Monday shows lowest engagement.\n\n**Recommendation**: Launch new content on Thursdays to capture weekend momentum and run re-engagement campaigns on Mondays.",
+                "title": "Viewing Sessions by Day",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "day_name",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_sessions)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_sessions)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 16,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "duration_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "duration_bucket",
+                      "expression": "`duration_bucket`"
+                    },
+                    {
+                      "name": "measure(total_sessions)",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_sessions`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: 60% of sessions are short (<5 min), indicating snacking behavior; 860 no-watch sessions signal abandoned sessions.\n\n**Recommendation**: Improve content discovery and reduce friction in the first 30 seconds to convert short sessions into longer engagement.",
+                "title": "Sessions by Duration Bucket",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "duration_bucket",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_sessions)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_sessions)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 16,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "activity_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "activity_level",
+                      "expression": "`activity_level`"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: 3,200 minimally active subscribers represent untapped potential; 598 inactive subscribers at risk of churn.\n\n**Recommendation**: Implement tiered engagement campaigns to move minimally active users to partially/fully active and win back inactive subscribers.",
+                "title": "Subscribers by Activity Level",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "activity_level",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 22,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "section_channels",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Channel Performance\n",
+                "\n",
+                "**Analyzing viewership across TV channels**"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "top_channels",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "measure(total_watch_minutes)",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    },
+                    {
+                      "name": "tv_channel",
+                      "expression": "`tv_channel`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: ICC Cricket leads with 24.7K minutes, followed by Live Sport Events (18.8K) - sports dominates viewership.\n\n**Recommendation**: Invest in more sports content rights and partnerships to capitalize on proven audience preference.",
+                "title": "Top 10 Channels by Watch Minutes",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(total_watch_minutes)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "tv_channel",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_watch_minutes)"
+                      }
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 30,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "channel_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "tv_channel",
+                      "expression": "`tv_channel`"
+                    },
+                    {
+                      "name": "measure(total_watch_minutes)",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    },
+                    {
+                      "name": "measure(total_sessions)",
+                      "expression": "MEASURE(`total_sessions`)"
+                    },
+                    {
+                      "name": "measure(avg_watch_minutes)",
+                      "expression": "MEASURE(`avg_watch_minutes`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "description": "**Insight**: Top 5 channels account for 67% of total watch time; long tail underperforms.\n\n**Recommendation**: Bundle underperforming channels into themed packages to improve discoverability.",
+                "title": "Channel Performance Summary",
+                "showTitle": true,
+                "showDescription": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "tv_channel",
+                    "useForSearch": true
+                  },
+                  {
+                    "fieldName": "measure(total_watch_minutes)"
+                  },
+                  {
+                    "fieldName": "measure(total_sessions)"
+                  },
+                  {
+                    "fieldName": "measure(avg_watch_minutes)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 30,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "section_marketing",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Marketing & Engagement\n",
+                "\n",
+                "**Understanding marketing channel effectiveness**"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 38,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "email_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    },
+                    {
+                      "name": "email_flag",
+                      "expression": "`email_flag`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: 100% email opt-in rate presents strong marketing opportunity.\n\n**Recommendation**: Leverage email for personalized content recommendations, re-engagement, and retention campaigns.",
+                "title": "Email Engagement",
+                "showTitle": true,
+                "showDescription": false
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "email_flag",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 40,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "social_chart",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    },
+                    {
+                      "name": "social_flag",
+                      "expression": "`social_flag`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: 96% have social media handles, enabling social listening and influencer partnerships.\n\n**Recommendation**: Build social community, track sentiment, and launch viral campaigns to drive acquisition.",
+                "title": "Social Media Presence",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "social_flag",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 40,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "section_retention",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Retention & Growth Opportunities\n",
+                "\n",
+                "**Identifying at-risk segments and underperforming channels**"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 46,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "inactive_by_province",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "province",
+                      "expression": "`province`"
+                    },
+                    {
+                      "name": "measure(inactive_subscribers)",
+                      "expression": "MEASURE(`inactive_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`inactive_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Gauteng has 210 inactive subscribers (35% of total inactive), proportional to subscriber base.\n\n**Recommendation**: Target high-value segments in Gauteng with hyper-personalized win-back offers.",
+                "title": "Inactive Subscribers by Province",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "province",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(inactive_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(inactive_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 48,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "inactive_by_age",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "age_groups",
+                      "expression": "`age_groups`"
+                    },
+                    {
+                      "name": "measure(inactive_subscribers)",
+                      "expression": "MEASURE(`inactive_subscribers`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`inactive_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Youth segment contributes 55% of inactive subscribers despite being most engaged overall.\n\n**Recommendation**: Refresh content library for youth with trending shows and interactive features.",
+                "title": "Inactive Subscribers by Age Group",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "age_groups",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(inactive_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(inactive_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 48,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "section_geographic",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Geographic Analysis\n",
+                "\n",
+                "**Regional performance and distribution insights**"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 54,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "watch_by_province",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "measure(total_watch_minutes)",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    },
+                    {
+                      "name": "province",
+                      "expression": "`province`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_watch_minutes`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Gauteng contributes 32K watch minutes (36% of total), showing strong engagement aligned with subscriber base.\n\n**Recommendation**: Replicate Gauteng's success model in other high-population provinces.",
+                "title": "Watch Minutes by Province",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(total_watch_minutes)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "province",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_watch_minutes)"
+                      }
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 56,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "activity_by_province",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "51a1e510",
+                  "fields": [
+                    {
+                      "name": "activity_level",
+                      "expression": "`activity_level`"
+                    },
+                    {
+                      "name": "province",
+                      "expression": "`province`"
+                    },
+                    {
+                      "name": "measure(total_subscribers)",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ],
+                  "cubeGroupingSets": {
+                    "sets": [
+                      {
+                        "fieldNames": [
+                          "activity_level"
+                        ]
+                      },
+                      {
+                        "fieldNames": [
+                          "province"
+                        ]
+                      }
+                    ]
+                  },
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_subscribers`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "description": "**Insight**: Activity patterns are consistent across provinces; minimal regional targeting needed.\n\n**Recommendation**: Apply universal engagement strategies rather than province-specific campaigns.",
+                "title": "Activity Distribution by Province",
+                "showTitle": true,
+                "showDescription": false
+              },
+              "mark": {
+                "layout": "stack"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "province",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_subscribers)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_subscribers)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "activity_level",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 56,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#f8f9fa",
+        "dark": "#0B132B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#ffffff",
+        "dark": "#2D3139"
+      },
+      "widgetBorderColor": {
+        "dark": "#FFC857"
+      },
+      "fontColor": {
+        "light": "#11171C",
+        "dark": "#E8ECF0"
+      },
+      "selectionColor": {
+        "light": "#2272B4",
+        "dark": "#8ACAFF"
+      },
+      "visualizationColors": [
+        "#0B132B",
+        "#1D9BF0",
+        "#8c564b",
+        "#e377c2",
+        "#7f7f7f",
+        "#bcbd22",
+        "#17becf"
+      ],
+      "widgetHeaderAlignment": "LEFT",
+      "fontFamily": "Inter",
+      "widgetPadding": 16,
+      "widgetCornerRadius": 16,
+      "widgetShadow": 10
+    },
+    "applyModeEnabled": false
+  }
+}
